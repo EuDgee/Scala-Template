@@ -1,8 +1,6 @@
-enablePlugins(JavaAppPackaging)
+enablePlugins(ScalaJSPlugin)
 
-enablePlugins(DockerPlugin)
-
-name := "Scala-Template"
+name := "Scala-Js-Template"
 
 version := "1.0"
 
@@ -10,21 +8,20 @@ scalaVersion := "2.11.6"
 
 scalacOptions := Seq("-unchecked", "-deprecation", "-encoding", "utf8")
 
-resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/"
+libraryDependencies += "org.scala-js" %%% "scalajs-dom" % "0.8.0"
 
-libraryDependencies ++= {
-  val akkaV       = "2.3.9"
-  val akkaStreamV = "1.0-M3"
-  val scalaTestV  = "2.2.1"
-  Seq(
-    "com.typesafe.akka" %% "akka-actor"                        % akkaV,
-    "com.typesafe.akka" %% "akka-stream-experimental"          % akkaStreamV,
-    "com.typesafe.akka" %% "akka-http-core-experimental"       % akkaStreamV,
-    "com.typesafe.akka" %% "akka-http-experimental"            % akkaStreamV,
-    "com.typesafe.akka" %% "akka-http-spray-json-experimental" % akkaStreamV,
-    "com.typesafe.akka" %% "akka-http-testkit-experimental"    % akkaStreamV,
-    "org.scalatest"     %% "scalatest"                         % scalaTestV % "test"
-  )
-}
+libraryDependencies += "be.doeraene" %%% "scalajs-jquery" % "0.8.0"
 
-Revolver.settings
+libraryDependencies += "com.lihaoyi" %%% "utest" % "0.3.0" % "test"
+
+testFrameworks += new TestFramework("utest.runner.Framework")
+
+scalaJSStage in Global := FastOptStage
+
+skip in packageJSDependencies := false
+
+jsDependencies += RuntimeDOM
+
+persistLauncher in Compile := true
+
+persistLauncher in Test := false
